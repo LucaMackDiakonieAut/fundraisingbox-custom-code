@@ -1,0 +1,167 @@
+/*
+TO DO Luca
+
+Am ende des formulares sind nochmal "hidden" formularfelder wo bei einem DropDown noch der Pfeil angeziegt wird ohne dass das DropDown sichtbar ist
+*/
+
+
+/*
+Diese CSS Regeln kann man aukommentieren, dann werden die 3 felder (amount, zweck und interval) eingeblendet
+
+:is(#amountChoice, #intervalChoice, #projectChoice, fieldset#amountBox legend) {
+  border: 0;
+  clip: rect(1px, 1px, 1px, 1px);
+  clip-path: inset(50%);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+  word-wrap: normal !important;
+}*/
+
+:root {
+    --text: #000;
+    --bg: transparent;
+    --grey-transparent: rgba(234, 234, 234, 0.5);
+    --text-transparent: rgba(0, 0, 0, .075);
+    --grey: #ccc;
+    --accent-dark: #162e65;
+    --accent-light-transparent: rgba(102, 175, 233, 0.6);
+    --submit-button-bg: #d3185d;
+    --submit-button-text: white;
+    --border: 1px solid var(--grey);
+    --font-size: 1rem;
+    --gap: 1rem;
+  	--payment-option-columns: 2;
+  	--fb-font-family: neue-haas-grotesk-display, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
+    --fb-payment-method-border-width: 1.5px;
+}
+
+/* "Öffentliche Angabe" Headline weg  */
+fieldset#publicData {
+	margin-block:0;
+  	padding-block:0;
+}
+fieldset#publicData legend {
+	display:none;
+}
+/* Maximalbreite für das Formular  */
+#fbPaymentForm {
+    max-width: 660px !important;
+	margin-inline: auto; 
+}
+
+@media (max-width: 1279px) {
+    #fbPaymentForm {
+        width: 100%;
+       padding: 0 30px;
+    }
+}
+
+#fbPaymentForm fieldset > legend {
+	font-size: 34px;
+  	line-height: calc(44 / 34);
+  font-weight:700;
+  color: var(--accent-dark);
+}
+
+@media (max-width: 767px) {
+  #fbPaymentForm fieldset > legend {
+	font-size: 23px;
+  	line-height: calc(23 / 28);
+  }
+}
+legend p {
+    font-size: 1rem;
+    display: block;
+}
+
+p.text-enabled {
+	margin-top: 1em;
+  	font-weight:400;
+}
+
+#fbPaymentForm {
+    font-family: neue-haas-grotesk, sans-serif !important;
+}
+
+label,
+.label {
+    font-weight: 700;
+    color: var(--accent-dark);
+}
+
+.input:not([type="checkbox"]):not([type="radio"]) {
+    border: var(--border);
+    font-size: var(--font-size);
+    background: white;
+    box-shadow: inset 0 0 2px var(--grey);
+
+}
+
+.input:not([type="checkbox"]):not([type="radio"]):focus {
+    outline: var(--accent-light-transparent) !important;
+    outline-width: 2px;
+    outline-offset: -1.5px !important;
+    box-shadow: inset 0 1px 1px var(--text-transparent), 0 0 12px var(--accent-light-transparent)
+}
+
+select.input {
+    /* background-color: var(--grey-transparent) !important;*/
+    color: var(--accent-dark);
+}
+
+.input-donation_custom_field_8543>div {
+    display: flex;
+    gap: var(--gap);
+}
+
+input#submitForm {
+    border-radius: 9999px;
+    background-color: var(--submit-button-bg);
+    color: var(--submit-button-text);
+    text-transform: none;
+    padding-inline: 3em;
+    font-weight: 600;
+  	margin-bottom: calc(var(--gap) * 1.5);
+}
+
+input#submitForm:is(:hover, :focus) {
+    background-color: var(--accent-dark);
+}
+
+.select-wrapper {
+    position: relative;
+}
+
+.select-wrapper::after {
+    position: absolute;
+    right: calc(1em);
+    top: calc(50% - 1em / 2);
+    content: "\25BC";
+    /*background-image: url("data:image/svg+xml; utf8, ");*/
+
+    background-size: contain;
+    width: 0.8em;
+    height: 0.8em;
+    font-size: 0.8em;
+    line-height: 1;
+    color: var(--text);
+}
+
+#paymentmethods {
+	grid-template-columns: repeat(var(--payment-option-columns, 1), minmax(0, 1fr));
+}
+
+@media (max-width: 767px) {
+	--payment-option-columns--mobile: round(calc(var(--payment-option-columns)), 1);
+    #paymentmethods {
+		grid-template-columns: repeat(var(--payment-option-columns--mobile, 1), minmax(0, 1fr));
+}
+}
+
+.select-wrapper:has(select[name="payment[payment_method]"])::after {
+content: none !important;
+}
