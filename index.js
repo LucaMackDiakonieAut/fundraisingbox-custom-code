@@ -1,4 +1,5 @@
 
+
 document.addEventListener('DOMContentLoaded', function () {
     /**
      * ========================================
@@ -34,7 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
      * Toggle credit card & PayPal options depending on donation interval.
      * @param {string} interval - Value of "interval" URL param.
      */
-    function updateCreditcardSwitchDisplay(interval) {
+    /*function updateCreditcardSwitchDisplay(interval) {
         var toggleDivs = document.querySelectorAll('.creditcard-switch, .paymentmethod[for="paypal"]');
         toggleDivs.forEach(function (div) {
             if (interval !== '0') {
@@ -45,7 +46,55 @@ document.addEventListener('DOMContentLoaded', function () {
                 console.log('enable creditcard switch buttons', div);
             }
         });
+    }*/
+  
+   /** NEU 13-11-25 */
+  function updateCreditcardSwitchDisplay(interval) {
+    // toggle buttons visibility
+    var toggleDivs = document.querySelectorAll('.creditcard-switch, .paymentmethod[for="paypal"]');
+    toggleDivs.forEach(function (div) {
+        if (interval !== '0') {
+            div.style.display = 'none';
+        } else {
+            div.setAttribute('style', '');
+        }
+    });
+
+    // Payment forms
+    var creditCardForm = document.getElementById('creditCardForm');
+    var sepaForm = document.getElementById('bankAccountForm');
+    var epsForm = document.getElementById('epsBankForm');
+
+    // Hide all forms initially
+    if (creditCardForm) creditCardForm.style.display = 'none';
+    if (sepaForm) sepaForm.style.display = 'none';
+    if (epsForm) epsForm.style.display = 'none';
+
+    if (interval !== '0') {
+      // clear all payment methods for now === false
+      document.querySelectorAll('input[name="paymentmethods"]').forEach(function (r) {
+        r.checked = false;
+    	});
+      
+        // recurring donations → auto-select SEPA
+        var sepaRadio = document.getElementById('sepa_direct_debit');
+        if (sepaRadio) {
+            sepaRadio.checked = true;
+            sepaRadio.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        if (sepaForm) sepaForm.style.display = '';
+    } else {
+        // one-time donations → show currently selected payment method
+        var creditCardRadio = document.getElementById('stripe_credit_card');
+        var epsRadio = document.getElementById('eps');
+        var sepaRadio = document.getElementById('sepa_direct_debit');
+
+        if (creditCardRadio && creditCardRadio.checked && creditCardForm) creditCardForm.style.display = '';
+        if (epsRadio && epsRadio.checked && epsForm) epsForm.style.display = '';
+        if (sepaRadio && sepaRadio.checked && sepaForm) sepaForm.style.display = '';
     }
+}
+
 
     /**
      * Insert an info text below "Zahlungsweise" legend during a given date range.
@@ -384,3 +433,20 @@ if (companyCheckbox && birthdayInput) {
     });
   });
 })();
+  
+  
+  
+  // MOVE COUNTRY FIELD
+  // Move custom country field to the end of #donorData and default to AT
+var customCountryField = document.getElementById('payment_donation_custom_field_8542');
+var donorData = document.getElementById('donorData');
+
+if (customCountryField && donorData) {
+    // Move the entire parent .form-group container, if it exists
+    var formGroup = customCountryField.closest('.form-group') || customCountryField;
+    donorData.appendChild(formGroup);
+
+    // Set default value to AT
+    customCountryField.value = 'AT';
+}
+
